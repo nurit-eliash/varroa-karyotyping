@@ -1,0 +1,100 @@
+---
+title: "varroa karyotyping"
+author: "Nurit Eliash"
+date: "4/7/2022"
+output:
+  html_document:
+    code_folding: hide
+    theme: cerulean
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: yes
+      df_print: paged
+---
+<style type="text/css">
+  body{
+  font-size: 12pt;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries
+```{r libraries, echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(ggpubr)
+library(ggthemes)
+library(stats) 
+library(moments)
+library(grid)
+library(formattable)
+library(gridExtra)
+library(ggsignif)
+library(hrbrthemes)
+library(plotrix)
+library(rstatix)
+library(car)
+library(plotly)
+library(plyr)
+
+```
+
+## Load data
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+dat <- read.csv("/Users/nuriteliash/Documents/GitHub/varroa karyotyping/karyo_varroa.csv")
+summary(dat)
+```
+
+i tried differnet plots to visuzlize the distribution:
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, fill = sex)) + 
+  geom_boxplot( ) +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position="right")
+
+dot <- ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, colour = sex)) + 
+  geom_point( ) +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position="right") +
+  theme_classic() +
+ggtitle("Distribution of chromosome count") +
+        xlab("Number of chromosomes per cell") +
+        ylab("Percentage of cells") 
+
+# facet each sample
+line <- ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, group = ID ,colour = sex)) + 
+  geom_line( ) +
+  facet_wrap( ~ ID) +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position="right") +
+  theme_linedraw() +
+ggtitle("Distribution of chromosome count") +
+        xlab("Number of chromosomes per cell") +
+        ylab("Percentage of cells")
+
+line_smooth <- ggplot(dat, aes(x=chromo_number, y = cell_perc, group = ID ,colour = sex)) + 
+  geom_smooth(se=FALSE ) +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position="right") +
+  theme_classic() +
+ggtitle("Distribution of chromosome count") +
+        xlab("Number of chromosomes per cell") +
+        ylab("Percentage of cells") 
+
+ggplotly(line, tooltip = "ID")
+
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+# i can use this one, only if i put in each row the picture ID, in addition to a a coulmn of sample ID.
+ggplot(dat, aes(x=cell_count, fill=sex)) +
+    geom_histogram(binwidth=.5, alpha=.5, position="identity") +
+    geom_vline(data=cdat, aes(xintercept=rating.mean,  colour=sex),
+               linetype="dashed", size=1)
+
+```
