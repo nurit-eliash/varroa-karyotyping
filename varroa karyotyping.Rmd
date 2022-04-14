@@ -50,51 +50,49 @@ dat <- read.csv("/Users/nuriteliash/Documents/GitHub/varroa karyotyping/karyo_va
 summary(dat)
 ```
 
-i tried differnet plots to visuzlize the distribution:
+i tried different plots to visualize the distribution:
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
+# mean of proportion, all samples in the same plot
 ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, fill = sex)) + 
   geom_boxplot( ) +
   scale_fill_brewer(palette = "Set1") +
-  theme(legend.position="right")
-
-dot <- ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, colour = sex)) + 
-  geom_point( ) +
-  scale_fill_brewer(palette = "Set1") +
   theme(legend.position="right") +
-  theme_classic() +
-ggtitle("Distribution of chromosome count") +
+  ggtitle("Distribution of chromosome count") +
         xlab("Number of chromosomes per cell") +
-        ylab("Percentage of cells") 
+        ylab("Percentage of cells per sample")
 
-# facet each sample
-line <- ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, group = ID ,colour = sex)) + 
-  geom_line( ) +
-  facet_wrap( ~ ID) +
-  scale_fill_brewer(palette = "Set1") +
+# a bar plot
+ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc,group = ID ,fill = sex)) + 
+  geom_bar(position = "dodge" , stat="identity") +
+scale_fill_brewer(palette = "Set1") +
   theme(legend.position="right") +
   theme_linedraw() +
 ggtitle("Distribution of chromosome count") +
         xlab("Number of chromosomes per cell") +
-        ylab("Percentage of cells")
+        ylab("Percentage of cells per sample")
 
-line_smooth <- ggplot(dat, aes(x=chromo_number, y = cell_perc, group = ID ,colour = sex)) + 
-  geom_smooth(se=FALSE ) +
-  scale_fill_brewer(palette = "Set1") +
+# a line plot (less appropriate, as the chromosome number is NOT a continuos value, but at least the different samples are visible)
+p <- ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc,group = ID ,color = sex)) + 
+  geom_line(position = "dodge" , stat="identity") +
+scale_fill_brewer(palette = "Set1") +
   theme(legend.position="right") +
-  theme_classic() +
+ theme_classic2() +
 ggtitle("Distribution of chromosome count") +
         xlab("Number of chromosomes per cell") +
-        ylab("Percentage of cells") 
+        ylab("Percentage of cells per sample")
 
-ggplotly(line, tooltip = "ID")
+ggplotly(p, tooltip = "ID")
+
+# facet each sample
+ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc,group = ID ,fill = sex)) + 
+  geom_bar(position = "dodge" , stat="identity") +
+    facet_wrap( ~ ID) +
+scale_fill_brewer(palette = "Set1") +
+  theme(legend.position="right") +
+  theme_linedraw() +
+ggtitle("Distribution of chromosome count") +
+        xlab("Number of chromosomes per cell") +
+        ylab("Percentage of cells per sample")
 
 ```
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-# i can use this one, only if i put in each row the picture ID, in addition to a a coulmn of sample ID.
-ggplot(dat, aes(x=cell_count, fill=sex)) +
-    geom_histogram(binwidth=.5, alpha=.5, position="identity") +
-    geom_vline(data=cdat, aes(xintercept=rating.mean,  colour=sex),
-               linetype="dashed", size=1)
-
-```
