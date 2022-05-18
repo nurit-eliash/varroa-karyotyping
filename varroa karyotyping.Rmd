@@ -50,6 +50,21 @@ dat <- read.csv("/Users/nuriteliash/Documents/GitHub/varroa karyotyping/karyo_va
 summary(dat)
 ```
 
+sasha suggested plot (17/5/2022):
+```{r}
+#Sasha Mikheyev
+dat %>% ggplot(aes(chromo_number, cell_perc, group=ID, color = sex) ) + 
+  geom_line(alpha=.3) + 
+  stat_smooth(se=F, method="gam", aes(group=sex)) + 
+  theme_bw() + 
+  geom_vline(xintercept = 7, color = "blue") +
+  geom_vline(xintercept = 14, color = "red") +
+ theme_classic2() +
+ggtitle("Distribution of chromosome count") +
+        xlab("Number of chromosomes per cell") +
+        ylab("Percentage of cells per sample")
+```
+
 i tried different plots to visualize the distribution:
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # mean of proportion, all samples in the same plot
