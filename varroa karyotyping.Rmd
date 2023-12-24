@@ -11,18 +11,23 @@ output:
     toc_float:
       collapsed: yes
       df_print: paged
+editor_options: 
+  chunk_output_type: console
 ---
+
+```{=html}
 <style type="text/css">
   body{
   font-size: 12pt;
 }
 </style>
-
+```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Load libraries
+
 ```{r libraries, echo=TRUE, message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyverse)
@@ -45,12 +50,14 @@ library(plyr)
 ```
 
 ## Load data
+
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-dat <- read.csv("/Users/nuriteliash/Documents/GitHub/varroa karyotyping/karyo_varroa.csv")
+dat <- read.csv("/Users/nuriteliash/Documents/GitHub/varroa-karyotyping/karyo_varroa.csv")
 summary(dat)
 ```
 
 sasha suggested plot (17/5/2022):
+
 ```{r}
 #Sasha Mikheyev
 dat %>% ggplot(aes(chromo_number, cell_perc, group=ID, color = sex) ) + 
@@ -66,6 +73,7 @@ ggtitle("Distribution of chromosome count") +
 ```
 
 i tried different plots to visualize the distribution:
+
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # mean of proportion, all samples in the same plot
 ggplot(dat, aes(x=as.factor(chromo_number), y= cell_perc, fill = sex)) + 
@@ -110,4 +118,3 @@ ggtitle("Distribution of chromosome count") +
         ylab("Percentage of cells per sample")
 
 ```
-
