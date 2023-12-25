@@ -59,7 +59,6 @@ summary(dat)
 sasha suggested plot (17/5/2022):
 
 ```{r}
-#Sasha Mikheyev
 dat %>% ggplot(aes(chromo_number, cell_perc, group=ID, color = sex) ) + 
   geom_line(alpha=.3) + 
   stat_smooth(se=F, method="gam", aes(group=sex)) + 
@@ -67,9 +66,27 @@ dat %>% ggplot(aes(chromo_number, cell_perc, group=ID, color = sex) ) +
   geom_vline(xintercept = 7, color = "blue") +
   geom_vline(xintercept = 14, color = "red") +
  theme_classic2() +
-ggtitle("Distribution of chromosome count") +
+ggtitle("Chromosome count in immature mites
+(Karyotyping)") +
         xlab("Number of chromosomes per cell") +
         ylab("Percentage of cells per sample")
+
+# calculate the statistics (average, median and SE) for chromosome count
+# the average chromosome count, for each sex. 
+dat %>% filter(sex =="female") %>%
+  dplyr::select(chromo_number) %>%
+  as_vector() %>% 
+  as.numeric() %>%
+  mean()
+
+dat %>% filter(sex =="female") %>% 
+  dplyr::select(chromo_number) %>%
+summary()
+
+dat %>% filter(sex =="male") %>% 
+  dplyr::select(chromo_number) %>%
+summary()
+
 ```
 
 i tried different plots to visualize the distribution:
