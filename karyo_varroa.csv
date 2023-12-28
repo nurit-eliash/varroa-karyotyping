@@ -1,4 +1,4 @@
-﻿ID,sex,stage,cell_count,cell_perc,chromo_number
+﻿ID,Sex,stage,cell_count,cell_perc,chromo_number
 30,female,nymph,0,0,4
 30,female,nymph,0,0,5
 30,female,nymph,2,2.8,6
